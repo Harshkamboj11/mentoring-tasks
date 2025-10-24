@@ -85,12 +85,12 @@ app.post('/login', verifyToken, async (req, res) => {
         }
 
         const matchPass = await bcrypt.compare(password, user.password)
-        if(!match){
+        if(!matchPass){
             return res.status(422).json({Error: 'Wrong credientials, please check again before login'})
         }
         res.status(200).json({message: 'Logged in successful'})
     } catch (error) {
-        res.status(422).json({Error: 'Something went wrong'})
+        res.status(422).json({Error: 'Something went wrong',Error: error.message})
     }
     
 })

@@ -24,7 +24,8 @@ app.post('/generate', (req, res) => {
     }
 
     //creates token with seceret and privacy
-    const token = jwt.sign(payload, key, {expiresIn: '60s'})
+    const token = jwt.sign(payload, key, {expiresIn: '1h'})
+    console.log(token)
 })
 
 
@@ -48,23 +49,23 @@ function verifyToken(req, res, next){
     })
 }
 
-app.get('/protected', verifyToken, (req, res) => {
+app.post('/protected', verifyToken, (req, res) => {
     res.json({
         message: 'Access granted to protect data',
         user:req.user
     })
 })
 
-app.get('decode', (req, res) => {
-    const {token} = req.body
+// app.get('/decode', (req, res) => {
+//     const {token} = req.body
 
-    if(!token){
-        return res.status(422).json({Error: 'Token not found'})
-    }
+//     if(!token){
+//         return res.status(422).json({Error: 'Token not found'})
+//     }
 
-    const decoded = jwt.decode(token, {complete: true})
-    res.json(decoded)
-})
+//     const decoded = jwt.decode(token, {complete: true})
+//     res.json(decoded)
+// })
 
 app.listen(process.env.PORT, () => {
     console.log(`http:localhost:${process.env.PORT}`)
